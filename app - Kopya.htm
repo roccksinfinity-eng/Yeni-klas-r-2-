@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0e17" />
+    <meta name="description" content="Rovex — proqram təminatı, veb saytlar, mobil tətbiqlər və 24/7 texniki dəstək." />
+    <title>Rovex — İT və Texnologiya Həlləri</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b0e17;
+        --panel: #151a29;
+        --line: #283143;
+        --text: #f5f7fb;
+        --muted: #98a2b5;
+        --cyan: #09b6d4;
+        --cyan-light: #52d9ed;
+        --max: 1280px;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; scroll-padding-top: 30px; }
+      body {
+        min-width: 320px;
+        margin: 0;
+        overflow-x: hidden;
+        background: radial-gradient(ellipse at 50% 2%, rgba(0, 177, 210, .11), transparent 37rem), var(--bg);
+        color: var(--text);
+      }
+      body::before {
+        position: fixed;
+        z-index: -1;
+        inset: 0;
+        background-image: linear-gradient(rgba(111, 134, 165, .045) 1px, transparent 1px), linear-gradient(90deg, rgba(111, 134, 165, .045) 1px, transparent 1px);
+        background-size: 54px 54px;
+        content: "";
+        mask-image: linear-gradient(to bottom, black, transparent 82%);
+        pointer-events: none;
+      }
+      a { color: inherit; text-decoration: none; }
+      button, input, textarea { font: inherit; }
+      button, a { -webkit-tap-highlight-color: transparent; }
+      button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--cyan-light); outline-offset: 4px; }
+      .container { width: min(var(--max), calc(100% - 72px)); margin-inline: auto; }
+
+      .site-header {
+        position: relative;
+        z-index: 20;
+        border-bottom: 1px solid rgba(147, 167, 197, .1);
+        background: rgba(11, 14, 23, .96);
+      }
+      .header-row { display: flex; min-height: 80px; align-items: center; justify-content: space-between; }
+      .brand { display: inline-flex; align-items: center; gap: 12px; font-size: 1.35rem; font-weight: 780; letter-spacing: -.045em; }
+      .brand svg { width: 46px; height: 50px; flex: 0 0 auto; overflow: visible; filter: drop-shadow(0 0 7px rgba(24, 184, 229, .42)); }
+      .brand svg path:last-child { transform-box: view-box; transform-origin: center; transform: scale(1.18); }
+      .brand-name span { color: var(--cyan); }
+      .menu-toggle {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        border: 1px solid #303849;
+        border-radius: 15px;
+        background: rgba(15, 19, 30, .85);
+        color: var(--text);
+        cursor: pointer;
+        transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+      }
+      .menu-toggle:hover { border-color: var(--cyan); background: #141b29; transform: translateY(-1px); }
+      .menu-toggle svg { width: 23px; height: 23px; }
+      .menu-panel {
+        position: fixed;
+        z-index: 25;
+        inset: 80px 0 0;
+        display: none;
+        padding: 18px 24px 22px;
+        background: #0b0e17;
+        color: var(--text);
+        box-shadow: none;
+      }
+      .menu-panel.open {
+        display: flex;
+        flex-direction: column;
+        animation: menu-in 180ms ease-out;
+      }
+      .menu-content { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 22px; margin-top: 36px; }
+      .menu-links { display: grid; justify-items: start; gap: 6px; }
+      .menu-link { padding: 10px 0; color: var(--text); font-size: clamp(1.8rem, 3vw, 3rem); font-weight: 700; letter-spacing: -.05em; transition: color 150ms ease; }
+      .menu-link { position: relative; transition: color 150ms ease, transform 180ms ease; }
+      .menu-link::after { position: absolute; right: 0; bottom: 3px; left: 0; height: 1px; background: var(--cyan); content: ""; transform: scaleX(0); transform-origin: left; transition: transform 180ms ease; }
+      .menu-link:hover { color: var(--cyan-light); transform: translateX(8px); }
+      .menu-link:hover::after { transform: scaleX(1); }
+      .menu-external { display: inline-flex; align-items: center; gap: 10px; margin-top: 12px; padding-top: 17px; border-top: 1px solid #303849; color: var(--cyan-light); font-size: clamp(1.05rem, 1.5vw, 1.3rem); letter-spacing: 0; }
+      .menu-external::before { content: "↗"; font-size: 1.1em; }
+      .menu-actions { display: grid; justify-items: end; gap: 20px; }
+      @media (min-width: 1000px) {
+        .header-row { position: relative; z-index: 26; }
+        .menu-toggle { display: none; }
+        .menu-panel { position: absolute; z-index: 35; inset: 0 0 auto; display: flex; height: 80px; align-items: center; padding: 0; background: transparent; pointer-events: none; }
+        .menu-panel.open { animation: none; }
+        .menu-content { display: flex; width: min(var(--max), calc(100% - 72px)); align-items: center; justify-content: flex-end; gap: 10px; margin: 0 auto; }
+        .menu-links, .menu-actions, .menu-link, .menu-actions a, .menu-actions button { pointer-events: auto; }
+        .menu-links { display: flex; align-items: center; gap: 0; }
+        .menu-link { padding: 10px 9px; font-size: 1.08rem; letter-spacing: -.02em; white-space: nowrap; }
+        .menu-external { gap: 5px; margin: 0; padding: 10px 9px; border-top: 0; font-size: 1.08rem; }
+        .menu-actions { display: flex; align-items: center; gap: 12px; }
+        .menu-panel .button { min-height: 46px; padding-inline: 17px; white-space: nowrap; font-size: 1rem; }
+      }
+      .language-picker { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid #303849; border-radius: 999px; background: #111622; }
+      .language-picker button {
+        min-width: 42px;
+        min-height: 33px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: .75rem;
+        font-weight: 800;
+      }
+      .language-picker button.active { background: var(--cyan); color: #061118; }
+      .button {
+        display: inline-flex;
+        min-height: 54px;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 0 25px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        background: var(--cyan);
+        box-shadow: 0 9px 24px rgba(0, 182, 212, .16);
+        color: #061219;
+        cursor: pointer;
+        font-size: .94rem;
+        font-weight: 760;
+        transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+      }
+      .button:hover { transform: translateY(-2px); background: var(--cyan-light); }
+      .button svg { width: 19px; height: 19px; }
+      .button-outline { border-color: #384253; background: rgba(13, 17, 27, .35); box-shadow: none; color: var(--text); }
+      .button-outline:hover { border-color: var(--cyan); background: rgba(9, 182, 212, .09); color: var(--cyan-light); }
+
+      .hero {
+        display: grid;
+        min-height: 735px;
+        grid-template-columns: 1.02fr .98fr;
+        align-items: center;
+        gap: 40px;
+        padding-block: 76px 65px;
+      }
+      .hero-copy { position: relative; z-index: 1; padding-bottom: 12px; }
+      .eyebrow { display: inline-flex; align-items: center; gap: 12px; color: var(--cyan-light); font-size: .76rem; font-weight: 800; letter-spacing: .25em; }
+      .eyebrow-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 15px rgba(9, 182, 212, .9); }
+      h1, h2, h3, p { margin-top: 0; }
+      .hero h1 { max-width: 660px; margin: 27px 0 24px; font-size: clamp(3.05rem, 4vw, 4rem); font-weight: 770; line-height: 1.07; letter-spacing: -.065em; }
+      .hero h1 > span { color: var(--text); }
+      .hero h1 .accent { color: var(--cyan); }
+      .hero-description { max-width: 590px; margin-bottom: 34px; color: #b6bfce; font-size: clamp(1rem, 1.6vw, 1.21rem); line-height: 1.75; }
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 13px; }
+      .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 64px; padding-top: 31px; border-top: 1px solid rgba(147, 167, 197, .19); }
+      .metric strong { display: block; margin-bottom: 2px; font-size: clamp(1.6rem, 3.1vw, 2.35rem); line-height: 1.15; letter-spacing: -.05em; }
+      .metric span { color: var(--muted); font-size: .78rem; }
+      .terminal-wrap { position: relative; padding: 24px 12px 48px; perspective: 1000px; }
+      .terminal-glow { position: absolute; inset: 12% 2% 8%; border-radius: 50%; background: rgba(0, 167, 205, .17); filter: blur(70px); }
+      .terminal {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #2e394b;
+        border-radius: 18px;
+        background: linear-gradient(145deg, rgba(23, 30, 45, .97), rgba(12, 16, 26, .97));
+        box-shadow: 0 28px 95px rgba(0, 0, 0, .48), 0 0 60px rgba(0, 159, 200, .08);
+        transform: rotateY(-7deg) rotateX(2deg);
+      }
+      .terminal-top { display: flex; min-height: 57px; align-items: center; gap: 8px; padding: 0 18px; border-bottom: 1px solid #2b3444; color: #9aa5b8; font: .72rem ui-monospace, Consolas, monospace; }
+      .terminal-lights { display: flex; gap: 7px; margin-right: 12px; }
+      .terminal-lights i { width: 9px; height: 9px; border-radius: 50%; background: #ef6371; }
+      .terminal-lights i:nth-child(2) { background: #e6b84e; }
+      .terminal-lights i:nth-child(3) { background: #25c58a; }
+      .terminal-body { min-height: 325px; padding: 25px 27px 30px; color: #c4cede; font: clamp(.72rem, 1.1vw, .9rem)/2.15 ui-monospace, Consolas, monospace; }
+      .terminal-command { margin-bottom: 14px; color: var(--cyan-light); }
+      .terminal-ok { color: #5ee2a0; }
+      .terminal-live { color: #e7effa; }
+      .terminal-live span { color: var(--cyan-light); }
+      .terminal-status {
+        position: absolute;
+        right: -2px;
+        bottom: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        padding: 13px 17px;
+        border: 1px solid #303a4d;
+        border-radius: 16px;
+        background: #151b2a;
+        box-shadow: 0 14px 42px rgba(0, 0, 0, .38);
+        color: #e4e9f2;
+        font: 700 .76rem ui-monospace, Consolas, monospace;
+      }
+      .terminal-status svg { width: 20px; height: 20px; color: #35ddb0; }
+
+      .ticker { overflow: hidden; border-block: 1px solid rgba(147, 167, 197, .13); background: rgba(15, 19, 29, .65); }
+      .ticker-track { display: flex; width: max-content; align-items: center; gap: 34px; padding: 20px 0; animation: ticker 36s linear infinite; }
+      .ticker-item { display: inline-flex; align-items: center; gap: 12px; color: #9eaabd; font-size: .77rem; font-weight: 760; letter-spacing: .13em; white-space: nowrap; }
+      .ticker-item::before { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); content: ""; }
+      .section { padding-block: 112px; }
+      .section-kicker { display: block; margin-bottom: 13px; color: var(--cyan-light); font-size: .74rem; font-weight: 800; letter-spacing: .25em; }
+      .section-title { margin-bottom: 12px; font-size: clamp(2.15rem, 4.2vw, 3.25rem); line-height: 1.12; letter-spacing: -.055em; }
+      .section-description { max-width: 680px; margin-bottom: 0; color: var(--muted); font-size: 1.08rem; line-height: 1.75; }
+      .services-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 54px; }
+      .service-card {
+        min-height: 255px;
+        padding: 31px;
+        border: 1px solid #272f40;
+        border-radius: 24px;
+        background: linear-gradient(145deg, rgba(23, 29, 44, .98), rgba(17, 22, 34, .94));
+        transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+      }
+      .service-card:hover { transform: translateY(-5px); border-color: rgba(9, 182, 212, .52); background: linear-gradient(145deg, #192434, #111723); }
+      .service-icon { display: grid; width: 57px; height: 57px; margin-bottom: 26px; place-items: center; border: 1px solid rgba(9, 182, 212, .22); border-radius: 18px; background: rgba(9, 182, 212, .1); color: var(--cyan-light); }
+      .service-icon svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+      .service-card h3 { margin-bottom: 11px; font-size: 1.2rem; letter-spacing: -.025em; }
+      .service-card p { margin-bottom: 0; color: var(--muted); font-size: .93rem; line-height: 1.72; }
+
+      .about { overflow: hidden; border-block: 1px solid rgba(147, 167, 197, .12); background: radial-gradient(ellipse at 87% 50%, rgba(0, 156, 194, .12), transparent 40%), rgba(14, 18, 28, .45); }
+      .about-grid { display: grid; grid-template-columns: 1fr; align-items: center; }
+      .about-copy .section-title { max-width: 650px; margin-bottom: 23px; }
+      .about-copy p { max-width: 650px; color: #aeb8c8; font-size: 1rem; line-height: 1.8; }
+      .about-copy p + p { margin-top: 14px; }
+      .about-points { display: grid; grid-template-columns: 1fr 1fr; gap: 17px 18px; margin: 28px 0 0; padding: 0; list-style: none; }
+      .about-points li { display: flex; align-items: flex-start; gap: 10px; color: #d9e0eb; font-size: .89rem; }
+      .about-points li::before { display: grid; width: 21px; height: 21px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: rgba(32, 203, 123, .12); color: #4de5a0; content: "✓"; font-size: .72rem; font-weight: 800; }
+
+      .contact-section { padding-block: 112px; }
+      .contact-grid { display: grid; grid-template-columns: 1fr .85fr; gap: 62px; }
+      .contact-heading { margin-bottom: 35px; }
+      .contact-heading .section-title { margin-bottom: 13px; }
+      .contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+      .field { display: grid; gap: 9px; }
+      .field-full { grid-column: 1 / -1; }
+      .field label { color: #d5dce7; font-size: .85rem; font-weight: 650; }
+      .field input, .field textarea { width: 100%; border: 1px solid #2c3546; border-radius: 12px; background: #121725; color: var(--text); padding: 14px 15px; transition: border-color 150ms ease; }
+      .field input::placeholder, .field textarea::placeholder { color: #737f93; }
+      .field input:focus, .field textarea:focus { border-color: var(--cyan); outline: 0; }
+      .field textarea { min-height: 130px; resize: vertical; }
+      .contact-form .button { justify-self: start; margin-top: 4px; }
+      .contact-details { align-self: start; padding: 31px; border: 1px solid #272f40; border-radius: 23px; background: linear-gradient(145deg, rgba(22, 28, 43, .98), rgba(16, 21, 33, .95)); }
+      .contact-details h3 { margin-bottom: 27px; font-size: 1.22rem; }
+      .contact-item { display: grid; grid-template-columns: 44px 1fr; align-items: center; gap: 14px; padding-block: 16px; border-top: 1px solid rgba(147, 167, 197, .13); }
+      .contact-item-icon { display: grid; width: 43px; height: 43px; place-items: center; border: 1px solid rgba(9, 182, 212, .22); border-radius: 13px; background: rgba(9, 182, 212, .09); color: var(--cyan-light); }
+      .contact-item-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+      .contact-item-copy small { display: block; margin-bottom: 4px; color: var(--muted); font-size: .71rem; font-weight: 750; letter-spacing: .13em; }
+      .contact-item-copy a, .contact-item-copy span { color: #edf2f8; font-size: .95rem; }
+      .contact-item-copy a:hover { color: var(--cyan-light); }
+
+      .footer { padding-block: 52px 23px; border-top: 1px solid rgba(147, 167, 197, .14); background: rgba(10, 13, 21, .74); }
+      .footer-grid { display: grid; grid-template-columns: 1.2fr .8fr 1fr; gap: 40px; padding-bottom: 43px; }
+      .footer-brand p { max-width: 300px; margin: 15px 0 0; color: var(--muted); font-size: .92rem; line-height: 1.7; }
+      .footer-heading { margin-bottom: 16px; color: #e3e9f2; font-size: .76rem; font-weight: 800; letter-spacing: .16em; }
+      .footer-links, .footer-contact { display: grid; justify-items: start; gap: 11px; color: var(--muted); font-size: .9rem; }
+      .footer-links a:hover, .footer-contact a:hover { color: var(--cyan-light); }
+      .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 20px; border-top: 1px solid rgba(147, 167, 197, .12); color: #7e899b; font-size: .78rem; }
+
+      .floating-actions { position: fixed; z-index: 15; bottom: 24px; left: 20px; display: grid; gap: 12px; }
+      .float-button { display: grid; width: 60px; height: 60px; place-items: center; border: 1px solid rgba(255, 255, 255, .12); border-radius: 50%; box-shadow: 0 10px 30px rgba(0, 0, 0, .35); color: white; transition: transform 160ms ease; }
+      .float-button:hover { transform: translateY(-3px) scale(1.04); }
+      .float-button svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+      .whatsapp { background: #20c879; }
+      .call { background: #079ccd; }
+      .back-to-top { position: fixed; z-index: 14; right: 24px; bottom: 24px; display: grid; width: 60px; height: 60px; place-items: center; border: 1px solid #333e51; border-radius: 50%; background: #192132; color: var(--cyan-light); cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity 160ms ease, transform 160ms ease; }
+      .back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+      .back-to-top svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      .form-note { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.6; }
+      .reveal { opacity: 0; transform: translateY(18px); transition: opacity 550ms ease, transform 550ms cubic-bezier(.2,.7,.2,1); }
+      .reveal.is-visible { opacity: 1; transform: translateY(0); }
+      .service-card, .contact-details, .terminal { transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease; }
+      .terminal:hover { transform: translateY(-4px); border-color: rgba(9, 182, 212, .45); }
+
+      @keyframes ticker { to { transform: translateX(-50%); } }
+      @keyframes menu-in { from { opacity: 0; transform: translateY(-7px); } to { opacity: 1; transform: translateY(0); } }
+
+      @media (max-width: 920px) {
+        .container { width: min(var(--max), calc(100% - 48px)); }
+        .hero { min-height: 0; grid-template-columns: 1fr; gap: 12px; padding-block: 84px 72px; }
+        .hero-copy { max-width: 760px; }
+        .hero h1 { max-width: 700px; font-size: clamp(3.4rem, 9vw, 5.4rem); }
+        .terminal-wrap { width: min(690px, 100%); justify-self: center; margin-top: 15px; }
+        .terminal { transform: none; }
+        .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .about-grid { gap: 25px; }
+        .contact-grid { grid-template-columns: 1fr; gap: 38px; }
+      }
+      @media (max-width: 600px) {
+        .container { width: calc(100% - 36px); }
+        .header-row { min-height: 70px; }
+        .brand { gap: 9px; font-size: 1.21rem; }
+        .brand svg { width: 42px; height: 46px; }
+        .menu-panel { top: 70px; }
+        .menu-toggle { width: 44px; height: 44px; border-radius: 14px; }
+        .menu-content { grid-template-columns: 1fr; align-items: start; }
+        .menu-links { gap: 1px; }
+        .menu-actions { width: 100%; grid-template-columns: 1fr auto; align-items: center; }
+        .menu-panel .button { min-height: 46px; padding-inline: 19px; }
+        .hero { padding-block: 69px 48px; }
+        .eyebrow { gap: 9px; font-size: .65rem; letter-spacing: .18em; }
+        .eyebrow-dot { width: 8px; height: 8px; }
+        .hero h1 { margin-block: 22px 17px; font-size: clamp(3rem, 13.2vw, 4.15rem); line-height: 1.08; }
+        .hero-description { margin-bottom: 25px; font-size: 1rem; line-height: 1.65; }
+        .hero-actions { display: grid; grid-template-columns: 1fr; }
+        .hero-actions .button { width: 100%; }
+        .button { min-height: 51px; padding-inline: 19px; font-size: .88rem; }
+        .metrics { grid-template-columns: 1fr 1fr; gap: 24px 15px; margin-top: 39px; padding-top: 24px; }
+        .metric strong { font-size: 1.85rem; }
+        .metric span { font-size: .76rem; }
+        .terminal-wrap { margin-top: 16px; padding: 12px 0 38px; }
+        .terminal { border-radius: 15px; }
+        .terminal-top { min-height: 49px; padding-inline: 13px; font-size: .65rem; }
+        .terminal-body { min-height: 270px; padding: 20px 17px 23px; font-size: .68rem; line-height: 2; }
+        .terminal-status { right: 0; padding: 11px 13px; font-size: .68rem; }
+        .ticker-track { gap: 23px; padding-block: 17px; }
+        .ticker-item { font-size: .66rem; letter-spacing: .09em; }
+        .section { padding-block: 76px; }
+        .section-title { font-size: 2.3rem; }
+        .section-description { font-size: .98rem; }
+        .services-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 35px; }
+        .service-card { min-height: 0; padding: 24px; border-radius: 19px; }
+        .service-icon { width: 51px; height: 51px; margin-bottom: 19px; }
+        .about-grid { gap: 19px; }
+        .about-copy p { font-size: .95rem; }
+        .about-points { grid-template-columns: 1fr; gap: 14px; }
+        .contact-section { padding-block: 77px; }
+        .contact-grid { gap: 30px; }
+        .contact-form { grid-template-columns: 1fr; gap: 15px; }
+        .field-full { grid-column: auto; }
+        .contact-details { padding: 24px 21px; border-radius: 19px; }
+        .footer-grid { grid-template-columns: 1fr 1fr; gap: 31px 20px; }
+        .footer-brand { grid-column: 1 / -1; }
+        .footer { padding-top: 41px; }
+        .footer-bottom { font-size: .73rem; }
+        .floating-actions { bottom: 17px; left: 14px; gap: 9px; }
+        .float-button { width: 54px; height: 54px; }
+        .float-button svg { width: 25px; height: 25px; }
+        .back-to-top { right: 15px; bottom: 17px; width: 54px; height: 54px; }
+        .back-to-top svg { width: 24px; height: 24px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        .reveal { opacity: 1; transform: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-row">
+        <a class="brand" href="app.htm" aria-label="Rovex ana səhifə">
+          <svg viewBox="0 0 48 52" role="img" aria-label="Rovex">
+            <path d="M24 2.5 44.2 13.9v24.2L24 49.5 3.8 38.1V13.9L24 2.5Z" fill="none" stroke="#18b8e5" stroke-width="2.5" />
+            <path d="M18 35V17h9.2c5.1 0 8.1 2.4 8.1 6.4 0 3-1.8 5.1-5 6l5.7 5.6h-6.5l-5-5.2h-1.2V35H18Zm5.3-9.4h3.4c2.2 0 3.3-.7 3.3-2.1s-1.1-2.1-3.3-2.1h-3.4v4.2Z" fill="#18b8e5" />
+          </svg>
+          <span class="brand-name">Rovex<span>.</span></span>
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Menyunu aç" aria-expanded="false" aria-controls="menu-panel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+        </button>
+      </div>
+      <div class="menu-panel" id="menu-panel">
+        <div class="container menu-content">
+          <nav class="menu-links" aria-label="Əsas naviqasiya">
+            <a class="menu-link" href="app.htm" data-i18n="nav-home">Ana səhifə</a>
+            <a class="menu-link" href="services.htm" data-i18n="nav-services">Xidmətlər</a>
+            <a class="menu-link" href="about.htm" data-i18n="nav-about">Haqqımızda</a>
+            <a class="menu-link" href="contact.htm" data-i18n="nav-contact">Əlaqə</a>
+            <a class="menu-link" href="login.htm">Daxil ol</a>
+            <a class="menu-link menu-external" href="https://rovex-35.netlify.app/" target="_blank" rel="noopener noreferrer" data-i18n="nav-website">Rovex saytına keçid</a>
+          </nav>
+          <div class="menu-actions">
+            <div class="language-picker" aria-label="Dil seçin">
+              <button type="button" class="active" data-lang="az" aria-pressed="true">AZ</button>
+              <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+              <button type="button" data-lang="en" aria-pressed="false">EN</button>
+            </div>
+            <a class="button" href="contact.htm" data-i18n="nav-apply">Müraciət et</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container" id="home">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="eyebrow-dot"></span><span data-i18n="hero-kicker">İT &amp; TEXNOLOGİYA ŞİRKƏTİ</span></span>
+          <h1><span data-i18n="hero-line-one">Rəqəmsal ideyaları</span><br /><span class="accent" data-i18n="hero-line-two">real məhsula</span><br /><span data-i18n="hero-line-three">çeviririk.</span></h1>
+          <p class="hero-description" data-i18n="hero-description">Proqram təminatı, veb saytlar və 24/7 texniki dəstək — biznesiniz üçün mühəndis dəqiqliyi ilə qurulan rəqəmsal həllər.</p>
+          <div class="hero-actions">
+            <a class="button" href="contact.htm"><span data-i18n="hero-cta">Layihəni müzakirə edək</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" /></svg></a>
+            <a class="button button-outline" href="services.htm" data-i18n="hero-services">Xidmətlərə bax</a>
+          </div>
+          <div class="metrics" aria-label="Rovex göstəriciləri">
+            <div class="metric"><strong data-counter="120" data-suffix="+">0+</strong><span data-i18n="metric-projects">Tamamlanmış layihə</span></div>
+            <div class="metric"><strong data-counter="98" data-suffix="%">0%</strong><span data-i18n="metric-satisfaction">Müştəri məmnuniyyəti</span></div>
+            <div class="metric"><strong data-counter="24" data-suffix="/7">0/7</strong><span data-i18n="metric-support">Texniki dəstək</span></div>
+            <div class="metric"><strong data-counter="8" data-suffix="+">0+</strong><span data-i18n="metric-experience">İl təcrübə</span></div>
+          </div>
+        </div>
+        <div class="terminal-wrap" aria-label="Rovex istehsala buraxılış prosesi">
+          <div class="terminal-glow"></div>
+          <div class="terminal">
+            <div class="terminal-top"><span class="terminal-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>rovex@production ~</span></div>
+            <div class="terminal-body">
+              <div class="terminal-command">$ rovex deploy --production</div>
+              <div>▸ Building application…</div>
+              <div class="terminal-ok">✓ Build completed in 3.2s</div>
+              <div class="terminal-ok">✓ Tests passed (48/48)</div>
+              <div class="terminal-ok">✓ SSL &amp; CDN configured</div>
+              <div class="terminal-live">→ your-business.az is <span>live▌</span></div>
+            </div>
+          </div>
+          <div class="terminal-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4" /></svg><span>99.9% uptime</span></div>
+        </div>
+      </section>
+
+      <section class="about" id="about">
+        <div class="container about-grid section">
+          <div class="about-copy">
+            <span class="section-kicker" data-i18n="about-kicker">HAQQIMIZDA</span>
+            <h2 class="section-title" data-i18n="about-title">Texnologiyanı biznesin dilində danışırıq</h2>
+            <p data-i18n="about-paragraph-one">Rovex — Bakıda yerləşən İT və texnologiya şirkətidir. Biz kiçik biznesdən böyük holdinqlərə qədər müxtəlif şirkətlər üçün proqram təminatı, veb saytlar və rəqəmsal infrastruktur qururuq.</p>
+            <p data-i18n="about-paragraph-two">Məqsədimiz sadədir: mürəkkəb texnologiyanı sizin üçün sadə, etibarlı və gəlir gətirən alətə çevirmək.</p>
+            <ul class="about-points"><li data-i18n="about-point-one">Təcrübəli mühəndis komandası</li><li data-i18n="about-point-two">Şəffaf qiymət və dəqiq müddət</li><li data-i18n="about-point-three">Müasir texnologiya stack-i</li><li data-i18n="about-point-four">Layihədən sonra da real dəstək</li></ul>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a class="brand" href="#home"><svg viewBox="0 0 48 52" aria-hidden="true"><path d="M24 2.5 44.2 13.9v24.2L24 49.5 3.8 38.1V13.9L24 2.5Z" fill="none" stroke="#18b8e5" stroke-width="2.5" /><path d="M18 35V17h9.2c5.1 0 8.1 2.4 8.1 6.4 0 3-1.8 5.1-5 6l5.7 5.6h-6.5l-5-5.2h-1.2V35H18Zm5.3-9.4h3.4c2.2 0 3.3-.7 3.3-2.1s-1.1-2.1-3.3-2.1h-3.4v4.2Z" fill="#18b8e5" /></svg><span class="brand-name">Rovex<span>.</span></span></a>
+            <p data-i18n="footer-tagline">Rəqəmsal gələcəyi birlikdə quraq.</p>
+          </div>
+          <div><h3 class="footer-heading" data-i18n="footer-nav">Naviqasiya</h3><nav class="footer-links" aria-label="Alt naviqasiya"><a href="app.htm" data-i18n="nav-home">Ana səhifə</a><a href="services.htm" data-i18n="nav-services">Xidmətlər</a><a href="about.htm" data-i18n="nav-about">Haqqımızda</a><a href="contact.htm" data-i18n="nav-contact">Əlaqə</a><a href="login.htm">Daxil ol</a></nav></div>
+          <div><h3 class="footer-heading" data-i18n="footer-contact">Birbaşa əlaqə</h3><div class="footer-contact"><a href="tel:+994993028828">+994 99 302 88 28</a><a href="mailto:rovex20492@gmail.com">rovex20492@gmail.com</a><span data-i18n="address-value">Bakı şəhəri, Azərbaycan</span></div></div>
+        </div>
+        <div class="footer-bottom"><span>© <span id="year"></span> Rovex. <span data-i18n="copyright">Bütün hüquqlar qorunur.</span></span><span data-i18n="footer-tagline">Rəqəmsal gələcəyi birlikdə quraq.</span></div>
+      </div>
+    </footer>
+
+    <div class="floating-actions" aria-label="Sürətli əlaqə">
+      <a class="float-button whatsapp" href="https://wa.me/994993028828" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ilə yazın"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.7A8.5 8.5 0 1 1 20.5 11.5Z" /><path d="M8.3 8.1c.3-.6.6-.6.9-.6h.4c.2 0 .4 0 .5.4l.7 1.7c.1.3 0 .5-.1.7l-.5.6c-.2.2-.2.4 0 .6.5.8 1.2 1.5 2 1.9.3.2.5.2.7-.1l.7-.8c.2-.2.4-.3.7-.2l1.6.8c.3.1.4.3.4.5 0 .3-.2 1.1-.7 1.5-.5.5-1.2.7-1.9.6-1-.1-2.2-.6-3.5-1.7-1.5-1.3-2.5-2.9-2.8-3.9-.3-1 .1-1.8.5-2Z" /></svg></a>
+      <a class="float-button call" href="tel:+994993028828" aria-label="Zəng edin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 11.2 19a19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 2.8a2 2 0 0 1-.6 1.7L7.1 10a16 16 0 0 0 6 6l1.8-1.9a2 2 0 0 1 1.7-.6l2.8.5a2 2 0 0 1 1.6 1.9Z" /></svg></a>
+    </div>
+    <button class="back-to-top" type="button" aria-label="Yuxarı qayıt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg></button>
+
+    <script>
+      const translations = {
+        az: {
+          "nav-home":"Ana səhifə","nav-services":"Xidmətlər","nav-about":"Haqqımızda","nav-website":"Rovex saytına keçid","nav-blog":"Bloq","nav-contact":"Əlaqə","nav-apply":"Müraciət et",
+          "hero-kicker":"İT & TEXNOLOGİYA ŞİRKƏTİ","hero-line-one":"Rəqəmsal ideyaları","hero-line-two":"real məhsula","hero-line-three":"çeviririk.",
+          "hero-description":"Proqram təminatı, veb saytlar və 24/7 texniki dəstək — biznesiniz üçün mühəndis dəqiqliyi ilə qurulan rəqəmsal həllər.","hero-cta":"Layihəni müzakirə edək","hero-services":"Xidmətlərə bax",
+          "metric-projects":"Tamamlanmış layihə","metric-satisfaction":"Müştəri məmnuniyyəti","metric-support":"Texniki dəstək","metric-experience":"İl təcrübə",
+          "services-kicker":"NƏ TƏKLİF EDİRİK","services-title":"Xidmətlərimiz","services-description":"İdeyadan işlək məhsula qədər — tam tsikl rəqəmsal xidmətlər.",
+          "service-software-title":"Proqram Təminatı","service-software-text":"Biznes proseslərinizə uyğun fərdi veb və masaüstü proqramlar, ERP/CRM həlləri və inteqrasiyalar.",
+          "service-web-title":"Veb Saytlar","service-web-text":"Sürətli, mobil uyğun və SEO optimallaşdırılmış korporativ saytlar, onlayn mağazalar və landing səhifələr.",
+          "service-support-title":"Texniki Dəstək 24/7","service-support-text":"Serverlərin monitorinqi, sistem yeniləmələri və fasiləsiz texniki dəstək — hər zaman, hər gün.",
+          "service-mobile-title":"Mobil Tətbiqlər","service-mobile-text":"iOS və Android üçün müasir, sürətli və istifadəçi dostu mobil tətbiqlər.",
+          "service-cloud-title":"Bulud & DevOps","service-cloud-text":"Bulud infrastrukturunun qurulması, CI/CD avtomatlaşdırma və miqyaslana bilən arxitektura.",
+          "service-design-title":"UI/UX Dizayn","service-design-text":"İstifadəçi təcrübəsinə əsaslanan interfeys dizaynı, prototipləmə və brend identikliyi.",
+          "about-kicker":"HAQQIMIZDA","about-title":"Texnologiyanı biznesin dilində danışırıq",
+          "about-paragraph-one":"Rovex — Bakıda yerləşən İT və texnologiya şirkətidir. Biz kiçik biznesdən böyük holdinqlərə qədər müxtəlif şirkətlər üçün proqram təminatı, veb saytlar və rəqəmsal infrastruktur qururuq.",
+          "about-paragraph-two":"Məqsədimiz sadədir: mürəkkəb texnologiyanı sizin üçün sadə, etibarlı və gəlir gətirən alətə çevirmək.",
+          "about-point-one":"Təcrübəli mühəndis komandası","about-point-two":"Şəffaf qiymət və dəqiq müddət","about-point-three":"Müasir texnologiya stack-i","about-point-four":"Layihədən sonra da real dəstək",
+          "contact-kicker":"ƏLAQƏ","contact-title":"Layihəniz var? Danışaq.","contact-description":"Formu doldurun — komandamız 24 saat ərzində sizinlə əlaqə saxlayacaq.",
+          "form-name-label":"Adınız","form-name-placeholder":"Adınızı daxil edin","form-email-label":"E-poçt","form-subject-label":"Mövzu","form-subject-placeholder":"Müraciətin mövzusu","form-message-label":"Mesaj","form-message-placeholder":"Mesajınızı yazın","form-submit":"Göndər",
+          "form-note":"Müraciətiniz FormSubmit vasitəsilə e-poçt ünvanımıza göndəriləcək. İlk göndərişdən sonra gələn təsdiq e-poçtunu qəbul edin.","direct-contact":"Birbaşa əlaqə","phone-label":"TELEFON / WHATSAPP","whatsapp-label":"WhatsApp","email-label":"E-POÇT","address-label":"ÜNVAN","address-value":"Bakı şəhəri, Azərbaycan",
+          "footer-tagline":"Rəqəmsal gələcəyi birlikdə quraq.","footer-nav":"Naviqasiya","footer-contact":"Birbaşa əlaqə","copyright":"Bütün hüquqlar qorunur."
+        },
+        ru: {
+          "nav-home":"Главная","nav-services":"Услуги","nav-about":"О нас","nav-website":"Перейти на сайт Rovex","nav-blog":"Блог","nav-contact":"Контакты","nav-apply":"Оставить заявку",
+          "hero-kicker":"ИТ И ТЕХНОЛОГИЧЕСКАЯ КОМПАНИЯ","hero-line-one":"Превращаем","hero-line-two":"цифровые идеи","hero-line-three":"в реальные продукты.",
+          "hero-description":"Программное обеспечение, сайты и техподдержка 24/7 — цифровые решения, созданные с инженерной точностью для вашего бизнеса.","hero-cta":"Обсудить проект","hero-services":"Наши услуги",
+          "metric-projects":"Завершённых проектов","metric-satisfaction":"Удовлетворённость клиентов","metric-support":"Техническая поддержка","metric-experience":"Лет опыта",
+          "services-kicker":"ЧТО МЫ ПРЕДЛАГАЕМ","services-title":"Наши услуги","services-description":"От идеи до готового продукта — полный цикл цифровых услуг.",
+          "service-software-title":"Программное обеспечение","service-software-text":"Индивидуальные веб- и десктоп-приложения, ERP/CRM-решения и интеграции для ваших бизнес-процессов.",
+          "service-web-title":"Веб-сайты","service-web-text":"Быстрые, адаптивные и SEO-оптимизированные корпоративные сайты, интернет-магазины и лендинги.",
+          "service-support-title":"Техподдержка 24/7","service-support-text":"Мониторинг серверов, обновление систем и бесперебойная техническая поддержка — каждый день.",
+          "service-mobile-title":"Мобильные приложения","service-mobile-text":"Современные, быстрые и удобные приложения для iOS и Android.",
+          "service-cloud-title":"Облако и DevOps","service-cloud-text":"Облачная инфраструктура, автоматизация CI/CD и масштабируемая архитектура.",
+          "service-design-title":"UI/UX-дизайн","service-design-text":"Дизайн интерфейсов с фокусом на пользовательский опыт, прототипирование и фирменный стиль.",
+          "about-kicker":"О НАС","about-title":"Говорим о технологиях на языке бизнеса",
+          "about-paragraph-one":"Rovex — ИТ- и технологическая компания из Баку. Мы создаём программное обеспечение, сайты и цифровую инфраструктуру для компаний от малого бизнеса до крупных холдингов.",
+          "about-paragraph-two":"Наша цель проста: превратить сложные технологии в простой, надёжный и полезный для вашего бизнеса инструмент.",
+          "about-point-one":"Опытная команда инженеров","about-point-two":"Прозрачная цена и точные сроки","about-point-three":"Современный технологический стек","about-point-four":"Поддержка и после запуска",
+          "contact-kicker":"КОНТАКТЫ","contact-title":"Есть проект? Давайте обсудим.","contact-description":"Заполните форму — наша команда свяжется с вами в течение 24 часов.",
+          "form-name-label":"Ваше имя","form-name-placeholder":"Введите ваше имя","form-email-label":"Электронная почта","form-subject-label":"Тема","form-subject-placeholder":"Тема обращения","form-message-label":"Сообщение","form-message-placeholder":"Напишите ваше сообщение","form-submit":"Отправить",
+          "form-note":"Заявка отправится на нашу почту через FormSubmit. Подтвердите активацию сервиса после первого обращения.","direct-contact":"Прямая связь","phone-label":"ТЕЛЕФОН / WHATSAPP","whatsapp-label":"WhatsApp","email-label":"ЭЛЕКТРОННАЯ ПОЧТА","address-label":"АДРЕС","address-value":"Баку, Азербайджан",
+          "footer-tagline":"Создадим цифровое будущее вместе.","footer-nav":"Навигация","footer-contact":"Прямая связь","copyright":"Все права защищены."
+        },
+        en: {
+          "nav-home":"Home","nav-services":"Services","nav-about":"About us","nav-website":"Visit the Rovex website","nav-blog":"Blog","nav-contact":"Contact","nav-apply":"Get in touch",
+          "hero-kicker":"IT & TECHNOLOGY COMPANY","hero-line-one":"We turn digital","hero-line-two":"ideas into","hero-line-three":"real products.",
+          "hero-description":"Software, websites and 24/7 technical support — digital solutions engineered precisely for your business.","hero-cta":"Let's discuss your project","hero-services":"Explore services",
+          "metric-projects":"Projects completed","metric-satisfaction":"Customer satisfaction","metric-support":"Technical support","metric-experience":"Years of experience",
+          "services-kicker":"WHAT WE OFFER","services-title":"Our services","services-description":"From idea to working product — complete end-to-end digital services.",
+          "service-software-title":"Software Development","service-software-text":"Custom web and desktop applications, ERP/CRM solutions and integrations built around your business.",
+          "service-web-title":"Websites","service-web-text":"Fast, responsive and SEO-optimised corporate websites, online stores and landing pages.",
+          "service-support-title":"24/7 Technical Support","service-support-text":"Server monitoring, system updates and dependable technical support, every day.",
+          "service-mobile-title":"Mobile Applications","service-mobile-text":"Modern, fast and user-friendly mobile applications for iOS and Android.",
+          "service-cloud-title":"Cloud & DevOps","service-cloud-text":"Cloud infrastructure, CI/CD automation and scalable architecture.",
+          "service-design-title":"UI/UX Design","service-design-text":"User-centred interface design, prototyping and brand identity.",
+          "about-kicker":"ABOUT US","about-title":"We speak business through technology",
+          "about-paragraph-one":"Rovex is an IT and technology company based in Baku. We build software, websites and digital infrastructure for companies ranging from small businesses to large enterprises.",
+          "about-paragraph-two":"Our goal is simple: make complex technology a simple, reliable tool that helps your business grow.",
+          "about-point-one":"Experienced engineering team","about-point-two":"Transparent pricing and timelines","about-point-three":"Modern technology stack","about-point-four":"Ongoing support after launch",
+          "contact-kicker":"CONTACT","contact-title":"Have a project? Let's talk.","contact-description":"Send us a message — our team will get back to you within 24 hours.",
+          "form-name-label":"Your name","form-name-placeholder":"Enter your name","form-email-label":"Email","form-subject-label":"Subject","form-subject-placeholder":"What is this about?","form-message-label":"Message","form-message-placeholder":"Write your message","form-submit":"Send message",
+          "form-note":"Your request will be sent to our email through FormSubmit. Confirm the service activation email after the first submission.","direct-contact":"Get in touch","phone-label":"PHONE / WHATSAPP","whatsapp-label":"WhatsApp","email-label":"EMAIL","address-label":"LOCATION","address-value":"Baku, Azerbaijan",
+          "footer-tagline":"Let's build the digital future together.","footer-nav":"Navigation","footer-contact":"Contact details","copyright":"All rights reserved."
+        }
+      };
+
+      const menuButton = document.querySelector(".menu-toggle");
+      const menuPanel = document.querySelector("#menu-panel");
+      const backToTop = document.querySelector(".back-to-top");
+
+      function setMenuOpen(open) {
+        menuButton.setAttribute("aria-expanded", String(open));
+        menuButton.setAttribute("aria-label", open ? "Menyunu bağla" : "Menyunu aç");
+        menuButton.innerHTML = open
+          ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18" /></svg>'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>';
+        menuPanel.classList.toggle("open", open);
+      }
+
+      menuButton.addEventListener("click", () => {
+        setMenuOpen(menuButton.getAttribute("aria-expanded") !== "true");
+      });
+
+      menuPanel.addEventListener("click", (event) => {
+        if (event.target.closest("a")) setMenuOpen(false);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") setMenuOpen(false);
+      });
+
+      document.querySelectorAll("[data-lang]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const lang = button.dataset.lang;
+          document.documentElement.lang = lang;
+          document.querySelectorAll("[data-lang]").forEach((option) => {
+            const active = option === button;
+            option.classList.toggle("active", active);
+            option.setAttribute("aria-pressed", String(active));
+          });
+          document.querySelectorAll("[data-i18n]").forEach((element) => {
+            const value = translations[lang][element.dataset.i18n];
+            if (value) element.textContent = value;
+          });
+          document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+            const value = translations[lang][element.dataset.i18nPlaceholder];
+            if (value) element.placeholder = value;
+          });
+        });
+      });
+
+      window.addEventListener("scroll", () => {
+        backToTop.classList.toggle("visible", window.scrollY > 480);
+      }, { passive: true });
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const startedCounters = new WeakSet();
+      function animateCounter(element) {
+        if (startedCounters.has(element)) return;
+        startedCounters.add(element);
+        const target = Number(element.dataset.counter);
+        const suffix = element.dataset.suffix || "";
+        const duration = 1300;
+        const start = performance.now();
+        const tick = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          element.textContent = `${Math.round(target * eased)}${suffix}`;
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+      const revealObserver = !reducedMotion && "IntersectionObserver" in window ? new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          if (entry.target.matches("[data-counter]")) animateCounter(entry.target);
+          else entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.22 }) : null;
+      const revealTargets = document.querySelectorAll(".section, .about-grid");
+      if (!revealObserver || document.visibilityState === "hidden") {
+        revealTargets.forEach((element) => element.classList.add("is-visible"));
+      } else {
+        revealTargets.forEach((element) => {
+          element.classList.add("reveal");
+          revealObserver.observe(element);
+        });
+      }
+      document.querySelectorAll(".metric strong[data-counter]").forEach((element) => {
+        if (reducedMotion || !revealObserver || document.visibilityState === "hidden") element.textContent = `${element.dataset.counter}${element.dataset.suffix || ""}`;
+        else {
+          revealObserver.observe(element);
+          const rect = element.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) animateCounter(element);
+        }
+      });
+
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      document.querySelector("#year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0e17" />
+    <meta name="description" content="Rovex ilə layihəniz barədə danışın. Bizə yazın və komandamız sizinlə əlaqə saxlasın." />
+    <title>Əlaqə | Rovex</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="site.css" />
+    <script src="site.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-row">
+        <a class="brand" href="app.htm" aria-label="Rovex ana səhifə">
+          <svg viewBox="0 0 48 52" role="img" aria-label="Rovex"><path d="M24 2.5 44.2 13.9v24.2L24 49.5 3.8 38.1V13.9L24 2.5Z" fill="none" stroke="#18b8e5" stroke-width="2.5" /><path d="M18 35V17h9.2c5.1 0 8.1 2.4 8.1 6.4 0 3-1.8 5.1-5 6l5.7 5.6h-6.5l-5-5.2h-1.2V35H18Zm5.3-9.4h3.4c2.2 0 3.3-.7 3.3-2.1s-1.1-2.1-3.3-2.1h-3.4v4.2Z" fill="#18b8e5" /></svg>
+          <span class="brand-name">Rovex<span>.</span></span>
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Menyunu aç" aria-expanded="false" aria-controls="site-menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg></button>
+      </div>
+      <div class="menu-panel" id="site-menu">
+        <div class="container menu-content"><nav class="menu-links" aria-label="Əsas naviqasiya">
+          <a class="menu-link" href="app.htm">Ana səhifə</a><a class="menu-link" href="services.htm">Xidmətlər</a><a class="menu-link" href="about.htm">Haqqımızda</a><a class="menu-link" href="contact.htm" aria-current="page">Əlaqə</a><a class="menu-link" href="login.htm">Daxil ol</a><a class="menu-link menu-external" href="https://rovex-35.netlify.app/" target="_blank" rel="noopener noreferrer">Rovex saytına keçid</a>
+        </nav><a class="button menu-cta" href="#contact-form">Müraciət et <span aria-hidden="true">→</span></a></div>
+      </div>
+    </header>
+
+    <main class="page-main container">
+      <header class="page-intro">
+        <span class="eyebrow">ƏLAQƏ</span>
+        <h1 class="page-title">Layihəniz var? <span>Danışaq.</span></h1>
+        <p class="page-lede">Adınızı və əlaqə məlumatınızı yazın, layihənizi qısaca təsvir edin. Müraciətiniz birbaşa e-poçtumuza göndəriləcək.</p>
+      </header>
+      <div class="contact-layout contact-layout-form-only">
+        <section class="contact-card" aria-label="Müraciət formu">
+          <form class="contact-form" id="contact-form" action="https://formsubmit.co/ajax/rovex20492@gmail.com" method="POST">
+            <input type="hidden" name="_template" value="table" />
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="form-honeypot" />
+            <div class="field"><label for="name">Ad</label><input id="name" name="name" autocomplete="name" placeholder="Adınızı yazın" required /></div>
+            <div class="field"><label for="email">E-poçt</label><input id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com" required /></div>
+            <div class="field"><label for="subject">Mövzu</label><input id="subject" name="_subject" placeholder="Müraciətin mövzusu" required /></div>
+            <div class="field"><label for="message">Mesaj</label><textarea id="message" name="message" placeholder="Layihəniz və ehtiyacınız barədə yazın" required></textarea></div>
+            <button class="button" type="submit">Göndər <span aria-hidden="true">→</span></button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+            <p class="form-note">Müraciətiniz e-poçtumuza göndəriləcək. FormSubmit ilk istifadə zamanı e-poçt ünvanını təsdiqləməyi tələb edə bilər.</p>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer"><div class="container footer-row"><a class="brand" href="app.htm"><svg viewBox="0 0 48 52" aria-hidden="true"><path d="M24 2.5 44.2 13.9v24.2L24 49.5 3.8 38.1V13.9L24 2.5Z" fill="none" stroke="#18b8e5" stroke-width="2.5" /><path d="M18 35V17h9.2c5.1 0 8.1 2.4 8.1 6.4 0 3-1.8 5.1-5 6l5.7 5.6h-6.5l-5-5.2h-1.2V35H18Zm5.3-9.4h3.4c2.2 0 3.3-.7 3.3-2.1s-1.1-2.1-3.3-2.1h-3.4v4.2Z" fill="#18b8e5" /></svg><span class="brand-name">Rovex<span>.</span></span></a><nav class="footer-nav" aria-label="Alt naviqasiya"><a href="app.htm">Ana səhifə</a><a href="services.htm">Xidmətlər</a><a href="about.htm">Haqqımızda</a><a href="login.htm">Daxil ol</a></nav><span>© <span id="year"></span> Rovex</span></div></footer>
+  </body>
+</html>
